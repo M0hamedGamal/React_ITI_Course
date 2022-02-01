@@ -3,23 +3,19 @@ import { useParams, useLocation } from "react-router-dom";
 import Product from "./Product";
 
 let ShoppingCart = (props) => {
-  console.log(useParams(), useLocation());
-
+  let { products, onReset, onIncrement, onDelete } = props;
   return (
     <React.Fragment>
       <h1>Shopping Cart</h1>
-      <button
-        className="btn btn-secondary py-2 px-4 ms-2"
-        onClick={props.onReset}
-      >
+      <button className="btn btn-secondary py-2 px-4 ms-2" onClick={onReset}>
         Reset
       </button>
-      {props.products.map((product) => (
+      {products.map((product) => (
         <Product
           key={product.id}
           product={product}
-          handleAddProduct={props.onIncrement}
-          handleDeleteProduct={props.onDelete}
+          handleAddProduct={onIncrement}
+          handleDeleteProduct={onDelete}
         />
       ))}
     </React.Fragment>

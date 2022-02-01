@@ -1,11 +1,14 @@
 import React from "react";
 import NavBar from "./NavBar";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./Home";
 import About from "./About";
 import Contact from "./Contact";
 import ShoppingCart from "./ShoppingCart";
 import ProductDetail from "./ProductDetails";
+import NotFound from "./NotFound";
+import AboutTeam from "./AboutTeam";
+import AboutCompany from "./AboutCompany";
 
 export default class App extends React.Component {
   state = {
@@ -52,9 +55,14 @@ export default class App extends React.Component {
         <NavBar productsCount={this.state.products.length} />
         <main className="container">
           <Routes>
-            <Route path="" element={<Home />} />
-            <Route path="about-us" element={<About />} />
-            <Route path="contact-us" element={<Contact />} />
+            <Route path="" element={<Navigate to="home" />} />
+            <Route path="home" element={<Home />} />
+            <Route path="about" element={<About />}>
+              <Route index element={<AboutTeam />} />
+              <Route path="team" element={<AboutTeam />} />
+              <Route path="company" element={<AboutCompany />} />
+            </Route>
+            <Route path="contact" element={<Contact />} />
             <Route
               path="products"
               element={<ProductDetail products={this.state.products} />}
@@ -62,10 +70,10 @@ export default class App extends React.Component {
               <Route
                 path=":id"
                 element={<ProductDetail products={this.state.products} />}
-              ></Route>
+              />
             </Route>
             <Route
-              path="shopping-cart"
+              path="cart"
               element={
                 <ShoppingCart
                   products={this.state.products}
@@ -75,6 +83,8 @@ export default class App extends React.Component {
                 />
               }
             />
+            <Route path="not-found" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="not-found" />} />
           </Routes>
         </main>
       </>
