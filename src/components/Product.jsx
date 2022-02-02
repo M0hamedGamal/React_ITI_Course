@@ -23,12 +23,14 @@ export default class Product extends React.Component {
             >
               +
             </button>
-            <span
-              style={{ cursor: "pointer" }}
-              onClick={() => handleDeleteProduct(product.id)}
-            >
-              <i className="fas fa-trash"></i>
-            </span>
+            {
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={() => handleDeleteProduct(product)}
+              >
+                <i className="fas fa-trash" />
+              </span>
+            }
 
             <br />
           </div>

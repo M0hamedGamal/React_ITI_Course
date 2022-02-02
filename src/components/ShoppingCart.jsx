@@ -9,14 +9,17 @@ let ShoppingCart = (props) => {
       <button className="btn btn-secondary py-2 px-4 ms-2" onClick={onReset}>
         Reset
       </button>
-      {products.map((product) => (
-        <Product
-          key={product.id}
-          product={product}
-          handleAddProduct={onIncrement}
-          handleDeleteProduct={onDelete}
-        />
-      ))}
+      {products.map(
+        (product) =>
+          product.isInCart && (
+            <Product
+              key={product.id}
+              product={product}
+              handleAddProduct={onIncrement}
+              handleDeleteProduct={onDelete}
+            />
+          )
+      )}
     </React.Fragment>
   );
 };

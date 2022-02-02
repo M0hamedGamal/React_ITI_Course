@@ -9,13 +9,14 @@ import ProductDetail from "./ProductDetails";
 import NotFound from "./NotFound";
 import AboutTeam from "./AboutTeam";
 import AboutCompany from "./AboutCompany";
+import Menu from "./Menu";
 
 export default class App extends React.Component {
   state = {
     products: [
-      { id: 1, name: "Burger", count: 3 },
-      { id: 2, name: "Potato", count: 7 },
-      { id: 3, name: "Fries", count: 5 },
+      { id: 1, name: "Burger", price: 30, count: 0, isInCart: false },
+      { id: 2, name: "Potato", price: 20, count: 0, isInCart: false },
+      { id: 3, name: "Fries", price: 10, count: 0, isInCart: false },
     ],
   };
 
@@ -31,11 +32,11 @@ export default class App extends React.Component {
   };
 
   handleDeleteProduct = (productId) => {
-    this.setState((prevState) => ({
-      products: prevState.products.filter(
-        (product) => product.id !== productId
-      ),
-    }));
+    // this.setState((prevState) => ({
+    //   products: prevState.products.filter(
+    //     (product) => product.id !== productId
+    //   ),
+    // }));
   };
 
   handleResetProductCount = () => {
@@ -49,20 +50,44 @@ export default class App extends React.Component {
     this.setState({ products });
   };
 
+  handelIsInCart = (product) => {
+    let products = [...this.state.products];
+
+    const index = products.indexOf(product);
+    products[index] = { ...products[index] };
+
+    products[index].isInCart = !products[index].isInCart;
+
+    this.setState({ products });
+  };
+
   render() {
     return (
       <>
-        <NavBar productsCount={this.state.products.length} />
+        <NavBar
+          productsCount={this.state.products.filter((p) => p.isInCart).length}
+        />
         <main className="container">
           <Routes>
-            <Route path="" element={<Navigate to="home" />} />
-            <Route path="home" element={<Home />} />
-            <Route path="about" element={<About />}>
-              <Route index element={<AboutTeam />} />
-              <Route path="team" element={<AboutTeam />} />
-              <Route path="company" element={<AboutCompany />} />
-            </Route>
-            <Route path="contact" element={<Contact />} />
+            <Route
+              path="menu"
+              element={
+                <Menu
+                  products={this.state.products}
+                  handelIsInCart={this.handelIsInCart}
+                />
+              }
+            />
+            {
+              //   <Route path="" element={<Navigate to="home" />} />
+              // <Route path="home" element={<Home />} />
+              // <Route path="about" element={<About />}>
+              //   <Route index element={<AboutTeam />} />
+              //   <Route path="team" element={<AboutTeam />} />
+              //   <Route path="company" element={<AboutCompany />} />
+              // </Route>
+              // <Route path="contact" element={<Contact />} />
+            }
             <Route
               path="products"
               element={<ProductDetail products={this.state.products} />}
@@ -78,7 +103,7 @@ export default class App extends React.Component {
                 <ShoppingCart
                   products={this.state.products}
                   onIncrement={this.handleAddProduct}
-                  onDelete={this.handleDeleteProduct}
+                  onDelete={this.handelIsInCart}
                   onReset={this.handleResetProductCount}
                 />
               }
