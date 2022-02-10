@@ -10,6 +10,7 @@ import NotFound from "./NotFound";
 import AboutTeam from "./AboutTeam";
 import AboutCompany from "./AboutCompany";
 import Menu from "./Menu";
+import Login from "./Login";
 
 export default class App extends React.Component {
   state = {
@@ -79,7 +80,7 @@ export default class App extends React.Component {
               }
             />
             {
-              //   <Route path="" element={<Navigate to="home" />} />
+                <Route path="" element={<Navigate to="menu" />} />
               // <Route path="home" element={<Home />} />
               // <Route path="about" element={<About />}>
               //   <Route index element={<AboutTeam />} />
@@ -108,6 +109,7 @@ export default class App extends React.Component {
                 />
               }
             />
+            <Route path='login' element={<Login />} />
             <Route path="not-found" element={<NotFound />} />
             <Route path="*" element={<Navigate to="not-found" />} />
           </Routes>

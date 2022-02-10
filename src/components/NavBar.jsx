@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 const NavBar = (props) => (
   <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
     <div className="container-fluid">
-      <NavLink className="navbar-brand" to="/">
+      <NavLink className="navbar-brand" to="/menu">
         Navbar
       </NavLink>
       <div className="collapse navbar-collapse" id="navbarNav">
@@ -31,6 +31,11 @@ const NavBar = (props) => (
           <li className="nav-item">
             <NavLink className="nav-link" to="/cart">
               Shopping Cart
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/login">
+              Login
             </NavLink>
           </li>
         </ul>
