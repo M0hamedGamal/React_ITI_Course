@@ -1,17 +1,17 @@
-import React, { Component } from "react";
-
+import React from "react";
 import qs from "query-string";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ProductDetail = (props) => {
   const res = qs.parse(window.location.search);
   console.log(res);
 
+  let navigate = useNavigate();
   const { id } = useParams();
 
   const product = props.products.filter((p) => parseInt(id) === p.id)[0];
 
-  let handelSave = () => window.location.replace("/shopping-cart");
+  let handelSave = () => navigate("/shopping-cart", { replace: true });
 
   return (
     <>

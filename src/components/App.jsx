@@ -1,27 +1,42 @@
 import React from "react";
 import NavBar from "./NavBar";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Home from "./Home";
-import About from "./About";
-import Contact from "./Contact";
+import { ToastContainer, toast } from "react-toastify";
+// import Home from "./Home";
+// import About from "./About";
+// import Contact from "./Contact";
+// import AboutTeam from "./AboutTeam";
+// import AboutCompany from "./AboutCompany";
+import NotFound from "./NotFound";
 import ShoppingCart from "./ShoppingCart";
 import ProductDetail from "./ProductDetails";
-import NotFound from "./NotFound";
-import AboutTeam from "./AboutTeam";
-import AboutCompany from "./AboutCompany";
 import Menu from "./Menu";
 import Login from "./Login";
+import axios from "axios";
+import Admin from "./Admin";
+import ProductForm from "./ProductForm";
 
 export default class App extends React.Component {
-  state = {
-    products: [
-      { id: 1, name: "Burger", price: 30, count: 0, isInCart: false },
-      { id: 2, name: "Potato", price: 20, count: 0, isInCart: false },
-      { id: 3, name: "Fries", price: 10, count: 0, isInCart: false },
-    ],
+  constructor(props) {
+    super(props);
+    this.state = {
+      products: [],
+    };
+  }
+
+  componentDidMount = async () => {
+    await axios
+      .get("http://localhost:3000/products")
+      .then(({ data }) => this.setState({ products: data }));
   };
 
-  handleAddProduct = (product) => {
+  updateState = async () => {
+    await axios
+      .get("http://localhost:3000/products")
+      .then(({ data }) => this.setState({ products: data }));
+  };
+
+  handleIncrementProduct = (product) => {
     let products = [...this.state.products];
 
     const index = products.indexOf(product);
@@ -32,12 +47,16 @@ export default class App extends React.Component {
     this.setState({ products });
   };
 
-  handleDeleteProduct = (productId) => {
-    // this.setState((prevState) => ({
-    //   products: prevState.products.filter(
-    //     (product) => product.id !== productId
-    //   ),
-    // }));
+  handleDeleteProduct = async (productId) => {
+    await axios.delete(`http://localhost:3000/products/${productId}`);
+
+    let products = [...this.state.products];
+
+    products = products.filter((product) => product.id !== productId);
+
+    this.setState({ products });
+
+    toast.success("Item is Deleted");
   };
 
   handleResetProductCount = () => {
@@ -65,6 +84,7 @@ export default class App extends React.Component {
   render() {
     return (
       <>
+        <ToastContainer />
         <NavBar
           productsCount={this.state.products.filter((p) => p.isInCart).length}
         />
@@ -80,7 +100,7 @@ export default class App extends React.Component {
               }
             />
             {
-                <Route path="" element={<Navigate to="menu" />} />
+              <Route path="" element={<Navigate to="menu" />} />
               // <Route path="home" element={<Home />} />
               // <Route path="about" element={<About />}>
               //   <Route index element={<AboutTeam />} />
@@ -103,13 +123,31 @@ export default class App extends React.Component {
               element={
                 <ShoppingCart
                   products={this.state.products}
-                  onIncrement={this.handleAddProduct}
+                  onIncrement={this.handleIncrementProduct}
                   onDelete={this.handelIsInCart}
                   onReset={this.handleResetProductCount}
                 />
               }
             />
-            <Route path='login' element={<Login />} />
+            <Route
+              path="admin"
+              element={
+                <Admin
+                  products={this.state.products}
+                  handleDeleteProduct={this.handleDeleteProduct}
+                />
+              }
+            />
+            <Route
+              path="product-form/:id"
+              element={
+                <ProductForm
+                  products={this.state.products}
+                  updateState={this.updateState}
+                />
+              }
+            />
+            <Route path="login" element={<Login />} />
             <Route path="not-found" element={<NotFound />} />
             <Route path="*" element={<Navigate to="not-found" />} />
           </Routes>

@@ -1,0 +1,25 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "count": 0,
+      "isInCart": false,
+      "name": "Large Soup",
+      "price": 20
+    },
+    {
+      "id": 2,
+      "count": 0,
+      "isInCart": false,
+      "name": "Medium Soup",
+      "price": 15
+    },
+    {
+      "id": 3,
+      "count": 0,
+      "isInCart": false,
+      "name": "Small Soup",
+      "price": 10
+    }
+  ]
+}
